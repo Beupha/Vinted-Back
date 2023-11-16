@@ -10,6 +10,8 @@ const isAuthenticated = require("./middlewares/isAuthenticated");
 app.use(express.json());
 const mongoose = require("mongoose");
 
+const test = 0;
+
 cloudinary.config({
   cloud_name: "db7tagilw",
   api_key: "153837273158517",
