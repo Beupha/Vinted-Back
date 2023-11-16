@@ -9,7 +9,7 @@ const cloudinary = require("cloudinary").v2;
 const isAuthenticated = require("./middlewares/isAuthenticated");
 app.use(express.json());
 const mongoose = require("mongoose");
-
+const test = 0;
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_PUBLIC_KEY,
