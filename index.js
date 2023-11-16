@@ -11,9 +11,9 @@ app.use(express.json());
 const mongoose = require("mongoose");
 
 cloudinary.config({
-  cloud_name: "db7tagilw",
-  api_key: "153837273158517",
-  api_secret: "pgL70R61LKUFvnj3KNoIWgGCkH4",
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_PUBLIC_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 mongoose.connect(process.env.MONGODB_URI);
 
