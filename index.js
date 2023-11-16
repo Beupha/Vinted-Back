@@ -15,7 +15,6 @@ cloudinary.config({
   api_key: "153837273158517",
   api_secret: "pgL70R61LKUFvnj3KNoIWgGCkH4",
 });
-
 mongoose.connect(process.env.MONGODB_URI);
 
 const userRoutes = require("./routes/user");
