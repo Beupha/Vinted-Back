@@ -15,7 +15,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_PUBLIC_KEY,
   api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
-mongoose.connect(process.env.MONGODB_URI + "/Vinted");
+mongoose.connect(process.env.MONGODB_URI);
 
 const userRoutes = require("./routes/user");
 app.use(userRoutes);
