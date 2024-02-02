@@ -37,7 +37,10 @@ router.post("/user/signup", async (req, res) => {
       salt: salt,
     });
     newUser.save();
-    return res.status(200).json("Votre inscription est bien effective");
+    return res.status(200).json({
+      message: "Votre inscription est bien effective",
+      token: newUser.token,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -48,26 +51,28 @@ router.post("/user/signup", async (req, res) => {
 router.post("/user/login", async (req, res) => {
   try {
     const receivedMail = req.body.email;
-    // console.log("receivedMail --->", receivedMail);
 
     const userFound = await User.findOne({ email: receivedMail });
-    // console.log("userFound --->", userFound);
+
+    // if (!userFound) {
+    //   return res.status(400).json({
+    //     message:
+    //       "Nous n'avons pas trouvé de compte associé à cette adresse email",
+    //   });
+    // }
 
     const receivedPassword = req.body.password;
-    // console.log("receivedPassword --->", receivedPassword);
 
     const saltedReceivedPassword = receivedPassword + userFound.salt;
-    // console.log("saltedReceivedPassword --->", saltedReceivedPassword);
 
     const newHash = SHA256(saltedReceivedPassword).toString(encBase64);
-    // console.log("newHash --->", newHash);
 
     if (newHash === userFound.hash) {
       return res
         .status(200)
         .json({ message: "Vous êtes bien connecté", token: userFound.token });
     } else {
-      return res.status(401).json("Accès refusé");
+      return res.status(401).json({ message: "Accès refusé" });
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });

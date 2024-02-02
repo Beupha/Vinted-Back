@@ -17,19 +17,12 @@ router.post(
   fileUpload(),
   async (req, res) => {
     try {
-      // console.log("req.body ->", req.body);
-      // console.log("req.files ->", req.files);
-
       //j'upload la photo
       const convertedPicture = convertToBase64(req.files.picture);
       const uploadResult = await cloudinary.uploader.upload(convertedPicture);
-      // console.log("upload result ->", uploadResult);
 
       const { title, description, price, condition, city, brand, size, color } =
         req.body;
-
-      // console.log(req.user);
-      // console.log("username --->", req.user.account.username);
 
       const newOffer = new Offer({
         product_name: title,
@@ -53,11 +46,11 @@ router.post(
           },
         ],
 
-        // product_image: {
-        //   // informations sur l'image du produit
-        //   secure_url: uploadResult.secure_url,
-        //   public_id: uploadResult.public_id,
-        // },
+        product_image: {
+          // informations sur l'image du produit
+          secure_url: uploadResult.secure_url,
+          public_id: uploadResult.public_id,
+        },
         owner: req.user,
       });
 

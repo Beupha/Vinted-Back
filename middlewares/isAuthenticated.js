@@ -1,19 +1,17 @@
 const User = require("../models/User");
 
 const isAuthenticated = async (req, res, next) => {
-  // toute la logique d'authentification : récup du token, replace, findOne, etc...
-  //   console.log(req.headers.authorization); // Bearer c6pQYokEhXIqW8xoZg
-  const token = req.headers.authorization.replace("Bearer ", "");
-  //   console.log(token); // c6pQYokEhXIqW8xoZg
-  // une fois le token "délesté" de "Bearer ", vous pouvez recherché votre utilisateur dans la BDD grâce à un petit findOne :
-  const userFound = await User.findOne({ token: token }).select("account");
+  console.log(req.headers.authorization);
+  const user = await User.findOne({
+    token: req.headers.authorization.replace("Bearer ", ""),
+  });
 
-  if (userFound) {
-    req.user = userFound;
+  if (user) {
+    req.user = user;
 
     next();
   } else {
-    return res.status(401).json("Unauthorized");
+    return res.status(401).json("IsAuthenticated non validé");
   }
 };
 
