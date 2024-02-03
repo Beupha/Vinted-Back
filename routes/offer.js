@@ -59,11 +59,6 @@ router.post(
         owner: req.user,
       });
 
-      newOffer.populate({
-        select: "account",
-        path: "owner",
-      });
-
       //je déplace la photo uploadée dans un dossier avec comme nom l'ID de l'annonce
       cloudinary.uploader.rename(
         uploadResult.public_id,
@@ -72,7 +67,12 @@ router.post(
       );
 
       //je sauvegarde l'annonce
-      newOffer.save();
+      newOffer
+        .populate({
+          select: "account",
+          path: "owner",
+        })
+        .save();
       console.log(newOffer);
       res.status(201).json(newOffer);
     } catch (error) {
