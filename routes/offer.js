@@ -48,10 +48,20 @@ router.post(
 
         product_image: {
           // informations sur l'image du produit
-          secure_url: uploadResult.secure_url,
+          secure_url:
+            uploadResult.secure_url +
+            "vinted/offers/" +
+            newOffer.id +
+            "/" +
+            uploadResult.public_id,
           public_id: uploadResult.public_id,
         },
         owner: req.user,
+      });
+
+      newOffer.populate({
+        select: "account",
+        path: "owner",
       });
 
       //je déplace la photo uploadée dans un dossier avec comme nom l'ID de l'annonce
@@ -73,7 +83,7 @@ router.post(
 
 router.get("/offers", async (req, res) => {
   try {
-    const limit = 5;
+    const limit = 20;
     let skip = 0;
     if (req.query.sort) {
       if (req.query.sort !== "price-asc" && req.query.sort !== "price-desc") {
@@ -111,7 +121,7 @@ router.get("/offers", async (req, res) => {
       skip = (req.query.page - 1) * limit;
     }
     const offers = await Offer.find(filters)
-      .select("product_name  product_price -_id")
+      .select("product_name product_image product_price _id owner")
       .sort(sortedObject)
       .limit(limit)
       .skip(skip);
@@ -123,7 +133,7 @@ router.get("/offers", async (req, res) => {
 
 router.get("/offer/:id", async (req, res) => {
   try {
-    console.log(req.params);
+    // console.log("req.params -->", req.params);
     const offer = await Offer.findById(req.params.id).populate({
       select: "account",
       path: "owner",
