@@ -54,27 +54,30 @@ router.post(
         owner: req.user,
       });
 
-      //je déplace la photo uploadée dans un dossier avec comme nom l'ID de l'annonce
+      //je déplace la photo uploadée dans un dossier de cloudinary avec comme nom l'ID de l'annonce
       cloudinary.uploader.rename(
         uploadResult.public_id,
         "vinted/offers/" + newOffer.id + "/" + uploadResult.public_id,
         (options = {})
       );
 
-      console.log("public_id ->", newOffer.product_image.public_id);
-      console.log("secure_url ->", newOffer.product_image.secure_url);
+      // console.log("public_id ->", newOffer.product_image.public_id);
+      // console.log("secure_url ->", newOffer.product_image.secure_url);
 
+      //je ronomme secure URL suite au déplacement dans cloudinary
       (newOffer.product_image.secure_url =
         newOffer.product_image.secure_url.substr(0, 62) +
         "vinted/offers/" +
         newOffer.id +
         "/" +
         newOffer.product_image.public_id),
-        //je sauvegarde l'annonce
+        //je récupère les infos owner
         newOffer.populate({
           select: "account",
           path: "owner",
         });
+
+      //je sauvegarde l'annonce
       newOffer.save();
       console.log(newOffer);
       res.status(201).json(newOffer);
