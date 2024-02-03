@@ -6,14 +6,16 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 router.use(express.json());
 
 router.post("/payment", async (req, res) => {
+  //   console.log("req.body ->", req.body);
   try {
-    const token = req.body.stripeToken;
+    const token = req.body.token;
     const chargeObject = await stripe.charges.create({
-      amount: 3333,
+      amount: req.body.amount * 100,
       currency: "eur",
-      description: "La description de l'objet acheté",
+      description: req.body.title,
       source: token,
     });
+    // console.log("chargeObject ->", chargeObject);
     return res.status(200).json(chargeObject);
   } catch (error) {
     console.log(error.message);
