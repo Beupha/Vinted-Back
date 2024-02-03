@@ -5,7 +5,7 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 router.use(express.json());
 
-app.post("/payment", async (req, res) => {
+router.post("/payment", async (req, res) => {
   try {
     const token = req.body.stripeToken;
     const chargeObject = await stripe.charges.create({

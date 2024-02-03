@@ -23,6 +23,9 @@ app.use(userRoutes);
 const offerRoutes = require("./routes/offer");
 app.use(offerRoutes);
 
+const paymentRoutes = require("./routes/payment");
+app.use(paymentRoutes);
+
 app.all("*", (req, res) => {
   return res.status(404).json("Not found");
 });
