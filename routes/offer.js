@@ -48,12 +48,7 @@ router.post(
 
         product_image: {
           // informations sur l'image du produit
-          secure_url:
-            uploadResult.secure_url +
-            "vinted/offers/" +
-            newOffer.id +
-            "/" +
-            uploadResult.public_id,
+          secure_url: uploadResult.secure_url,
           public_id: uploadResult.public_id,
         },
         owner: req.user,
@@ -66,7 +61,20 @@ router.post(
         (options = {})
       );
 
-      //je sauvegarde l'annonce
+      console.log("public_id ->", newOffer.product_image.public_id);
+      console.log("secure_url ->", newOffer.product_image.secure_url);
+
+      (newOffer.product_image.secure_url =
+        newOffer.product_image.secure_url.substr(0, 62) +
+        "vinted/offers/" +
+        newOffer.id +
+        "/" +
+        newOffer.product_image.public_id),
+        //je sauvegarde l'annonce
+        newOffer.populate({
+          select: "account",
+          path: "owner",
+        });
       newOffer.save();
       console.log(newOffer);
       res.status(201).json(newOffer);
