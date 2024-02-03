@@ -54,7 +54,7 @@ router.post(
         owner: req.user,
       });
 
-      //je déplace la photo uploadé dans un dossier avec comme nom l'ID de l'annonce
+      //je déplace la photo uploadée dans un dossier avec comme nom l'ID de l'annonce
       cloudinary.uploader.rename(
         uploadResult.public_id,
         "vinted/offers/" + newOffer.id + "/" + uploadResult.public_id,
