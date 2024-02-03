@@ -68,10 +68,6 @@ router.post(
 
       //je sauvegarde l'annonce
       newOffer.save();
-      newOffer.populate({
-        select: "account",
-        path: "owner",
-      });
       console.log(newOffer);
       res.status(201).json(newOffer);
     } catch (error) {
